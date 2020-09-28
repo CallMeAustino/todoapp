@@ -3,13 +3,13 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const { default: TodosList } = require('../src/components/todos-list');
 const todoRoutes = express.Router();
 const PORT = 4000;
 
+let Todo = require('./todo.model');
+
 app.use(cors()); //app.use binds middleware to the express server
 app.use(bodyParser.json());
-app.use('/todos', todoRoutes);
 
 /*get list of all todos*/
 todoRoutes.route('/').get(function(req, res) {
@@ -68,6 +68,8 @@ const connection = mongoose.connection;
 connection.once('open', function() {
     console.log("MongoDB database connection established successfully.");
 })
+
+app.use('/todos', todoRoutes);
 
 app.listen(PORT, function () {
     console.log("Server is running on Port: " + PORT);
